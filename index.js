@@ -18,6 +18,13 @@ app.get("/", (req, res) => {
 
 app.post("/api/agent-request", async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected"
+      });
+    }
+
     const { name, mobile, email } = req.body;
 
     if (!name || !mobile || !email) {
@@ -27,11 +34,7 @@ app.post("/api/agent-request", async (req, res) => {
       });
     }
 
-    const agent = await AgentRequest.create({
-      name,
-      mobile,
-      email
-    });
+    const agent = await AgentRequest.create({ name, mobile, email });
 
     res.status(201).json({
       success: true,
@@ -39,7 +42,7 @@ app.post("/api/agent-request", async (req, res) => {
       data: agent
     });
   } catch (err) {
-    console.error("API error:", err);
+    console.error(err);
     res.status(500).json({
       success: false,
       message: err.message
