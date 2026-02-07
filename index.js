@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const AgentRequest = require("./agentrequest");
+const AgentRequest = require("./models/AgentRequest");
 
 const app = express();
 app.use(express.json());
