@@ -25,6 +25,24 @@ app.post("/api/agent-request", async (req, res) => {
       });
     }
 
+    /* ================= ADMIN: GET ALL AGENT REQUESTS ================= */
+app.get("/api/admin/agent-requests", async (req, res) => {
+  try {
+    const requests = await AgentRequest.find().sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      data: requests
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
+
     const { name, mobile, email } = req.body;
 
     if (!name || !mobile || !email) {
