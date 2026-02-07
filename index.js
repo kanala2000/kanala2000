@@ -14,6 +14,28 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
+
+app.post("/api/agent-request", (req, res) => {
+  const { name, mobile, email } = req.body;
+
+  if (!name || !mobile || !email) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required"
+    });
+  }
+
+  res.status(201).json({
+    success: true,
+    message: "Agent request received",
+    data: { name, mobile, email }
+  });
+});
+
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
