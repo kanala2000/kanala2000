@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const AgentRequest = require("./agentrequest");
+
 const app = express();
 app.use(express.json());
 
@@ -15,25 +17,32 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
-});
+app.post("/api/agent-request", async (req, res) => {
+  try {
+    const { name, mobile, email } = req.body;
 
-app.post("/api/agent-request", (req, res) => {
-  const { name, mobile, email } = req.body;
+    if (!name || !mobile || !email) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required"
+      });
+    }
 
-  if (!name || !mobile || !email) {
-    return res.status(400).json({
+    const newRequest = new AgentRequest({ name, mobile, email });
+    await newRequest.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Agent request received",
+      data: newRequest
+    });
+
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: "All fields are required"
+      message: "Server error"
     });
   }
-
-  res.status(201).json({
-    success: true,
-    message: "Agent request received",
-    data: { name, mobile, email }
-  });
 });
 
 app.listen(PORT, () => {
