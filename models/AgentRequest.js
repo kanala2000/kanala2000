@@ -1,17 +1,22 @@
 const mongoose = require("mongoose");
 
 const AgentRequestSchema = new mongoose.Schema({
-  name: String,
-  mobile: String,
-  email: String,
+  name: {
+    type: String,
+    required: true
+  },
+  mobile: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
   status: {
     type: String,
     default: "Pending"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("AgentRequest", AgentRequestSchema);
