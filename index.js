@@ -75,6 +75,48 @@ app.get("/api/admin/agent-requests", async (req, res) => {
   }
 });
 
+/* ================= ADMIN APPROVE / REJECT ================= */
+app.put("/api/admin/agent-request/:id", async (req, res) => {
+  try {
+    const { status } = req.body; // Approved or Rejected
+    const { id } = req.params;
+
+    if (!["Approved", "Rejected"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status"
+      });
+    }
+
+    const updated = await AgentRequest.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "Agent request not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Agent request ${status}`,
+      data: updated
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
+/* ================= END ADMIN APPROVE ================= */
+
 /* ================= SERVER ================= */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
