@@ -115,6 +115,52 @@ app.put("/api/admin/agent-request/:id", async (req, res) => {
     });
   }
 });
+/* ================= ADMIN APPROVE AGENT ================= */
+app.put("/api/admin/agent-request/:id/approve", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const agent = await AgentRequest.findById(id);
+
+    if (!agent) {
+      return res.status(404).json({
+        success: false,
+        message: "Agent not found"
+      });
+    }
+
+    // already approved check
+    if (agent.status === "Approved") {
+      return res.json({
+        success: true,
+        message: "Agent already approved",
+        data: agent
+      });
+    }
+
+    // generate Agent ID & Password
+    const agentId = "AG" + Math.floor(100000 + Math.random() * 900000);
+    const password = "Ag@" + Math.floor(1000 + Math.random() * 9000);
+
+    agent.status = "Approved";
+    agent.agentId = agentId;
+    agent.password = password;
+
+    await agent.save();
+
+    res.json({
+      success: true,
+      message: "Agent approved successfully",
+      data: agent
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+});
 /* ================= END ADMIN APPROVE ================= */
 
 /* ================= SERVER ================= */
