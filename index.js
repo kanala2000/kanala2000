@@ -58,7 +58,7 @@ app.post("/api/agent-request", async (req, res) => {
 });
 
 /* ================= ADMIN: GET ALL AGENT REQUESTS ================= */
-app.get("/api/admin/agent-requests", async (req, res) => {
+app.get("/api/admin/agent-request", async (req, res) => {
   try {
     const requests = await AgentRequest.find().sort({ createdAt: -1 });
 
