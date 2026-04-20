@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MYDREAM-DIGITAL SEVA</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <p class="badge">Trusted Digital Help Center</p>
+        <h1>MYDREAM-DIGITAL SEVA</h1>
+        <p class="subtitle">
+          PAN, Aadhaar, Voter Card, Government Job Forms, Student Registrations,
+          and Professional Resume Preparation — all in one place.
+        </p>
+        <a href="#request" class="btn">Book Your Service</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="section container">
+        <h2>Our Most Popular Services</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>PAN Card Services</h3>
+            <ul>
+              <li>New PAN Application</li>
+              <li>PAN Correction</li>
+              <li>Reprint PAN</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Aadhaar Services</h3>
+            <ul>
+              <li>Mobile Number Update</li>
+              <li>Child Aadhaar (Bal Aadhaar)</li>
+              <li>Address Correction Guidance</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Voter & Govt Services</h3>
+            <ul>
+              <li>Voter Card Apply</li>
+              <li>Government Job Form Apply</li>
+              <li>Important Document Assistance</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Education & Career</h3>
+            <ul>
+              <li>Kasturba School Registration</li>
+              <li>School & College Form Support</li>
+              <li>Automatic Resume Preparation</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="request" class="section request">
+        <div class="container">
+          <h2>Request a Service</h2>
+          <p>Fill in your details and we will contact you shortly.</p>
+
+          <form id="serviceForm">
+            <div class="form-grid">
+              <input type="text" name="name" placeholder="Full Name" required />
+              <input type="tel" name="mobile" placeholder="Mobile Number" required />
+              <input type="email" name="email" placeholder="Email Address" required />
+
+              <select name="service" required>
+                <option value="">Select Service</option>
+                <option>New PAN Card</option>
+                <option>PAN Correction</option>
+                <option>Aadhaar Mobile Update</option>
+                <option>Child Aadhaar</option>
+                <option>Voter Card Apply</option>
+                <option>Government Job Apply</option>
+                <option>Kasturba School Registration</option>
+                <option>School/College Registration</option>
+                <option>Resume Preparation</option>
+                <option>Other Service</option>
+              </select>
+
+              <textarea
+                name="message"
+                placeholder="Write your requirement"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn">Submit Request</button>
+            <p id="formStatus" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© <span id="year"></span> MYDREAM-DIGITAL SEVA. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

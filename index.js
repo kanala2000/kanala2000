@@ -6,6 +6,7 @@ const AgentRequest = require("./models/AgentRequest");
 
 const app = express();
 app.use(express.json());
+app.use(express.static("public"));
 
 /* ================= DB CONNECT ================= */
 mongoose
@@ -15,7 +16,7 @@ mongoose
 
 /* ================= ROOT ================= */
 app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+  res.sendFile(`${__dirname}/public/index.html`);
 });
 
 /* ================= CREATE AGENT REQUEST (POST) ================= */
@@ -28,12 +29,12 @@ app.post("/api/agent-request", async (req, res) => {
       });
     }
 
-    const { name, mobile, email } = req.body;
+    const { name, mobile, email, service, message } = req.body;
 
-    if (!name || !mobile || !email) {
+    if (!name || !mobile || !email || !service) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "Name, mobile, email and service are required",
       });
     }
 
@@ -41,6 +42,8 @@ app.post("/api/agent-request", async (req, res) => {
       name,
       mobile,
       email,
+      service,
+      message,
     });
 
     res.status(201).json({
@@ -78,43 +81,39 @@ app.get("/api/admin/agent-request", async (req, res) => {
 /* ================= ADMIN APPROVE / REJECT ================= */
 app.put("/api/admin/agent-request/:id", async (req, res) => {
   try {
-    const { status } = req.body; // Approved or Rejected
+    const { status } = req.body;
     const { id } = req.params;
 
     if (!["Approved", "Rejected"].includes(status)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid status"
+        message: "Invalid status",
       });
     }
 
-    const updated = await AgentRequest.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    const updated = await AgentRequest.findByIdAndUpdate(id, { status }, { new: true });
 
     if (!updated) {
       return res.status(404).json({
         success: false,
-        message: "Agent request not found"
+        message: "Agent request not found",
       });
     }
 
     res.json({
       success: true,
       message: `Agent request ${status}`,
-      data: updated
+      data: updated,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
     });
   }
 });
+
 /* ================= ADMIN APPROVE AGENT ================= */
 app.put("/api/admin/agent-request/:id/approve", async (req, res) => {
   try {
@@ -125,20 +124,18 @@ app.put("/api/admin/agent-request/:id/approve", async (req, res) => {
     if (!agent) {
       return res.status(404).json({
         success: false,
-        message: "Agent not found"
+        message: "Agent not found",
       });
     }
 
-    // already approved check
     if (agent.status === "Approved") {
       return res.json({
         success: true,
         message: "Agent already approved",
-        data: agent
+        data: agent,
       });
     }
 
-    // generate Agent ID & Password
     const agentId = "AG" + Math.floor(100000 + Math.random() * 900000);
     const password = "Ag@" + Math.floor(1000 + Math.random() * 9000);
 
@@ -151,13 +148,13 @@ app.put("/api/admin/agent-request/:id/approve", async (req, res) => {
     res.json({
       success: true,
       message: "Agent approved successfully",
-      data: agent
+      data: agent,
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
     });
   }
 });

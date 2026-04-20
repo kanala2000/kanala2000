@@ -4,26 +4,34 @@ const AgentRequestSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     mobile: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
-      required: true
+      required: true,
+    },
+    service: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      default: "",
     },
     status: {
       type: String,
-      default: "Pending"
+      default: "Pending",
     },
     agentId: {
-      type: String
+      type: String,
     },
     password: {
-      type: String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );
